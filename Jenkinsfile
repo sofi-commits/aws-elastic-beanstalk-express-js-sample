@@ -20,6 +20,7 @@ pipeline {
                 stage('Install Dependencies') {
                     steps {
                         sh 'npm install'
+                        archiveArtifacts artifacts: 'package.json, package-lock.json', allowEmptyArchive: true
                     }
                 }
                 stage('Run Unit Tests') {
@@ -62,15 +63,6 @@ pipeline {
                     sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
                 }
             }
-        }
-    }
-
-    // Runs after every build regardless of outcome, pass or fail,
-    // so we always keep a record of the exact dependency versions
-    // that produced that result.
-    post {
-        always {
-            archiveArtifacts artifacts: 'package.json, package-lock.json', allowEmptyArchive: true
         }
     }
 }
