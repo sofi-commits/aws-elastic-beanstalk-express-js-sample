@@ -64,4 +64,13 @@ pipeline {
             }
         }
     }
+
+    // Runs after every build regardless of outcome, pass or fail,
+    // so we always keep a record of the exact dependency versions
+    // that produced that result.
+    post {
+        always {
+            archiveArtifacts artifacts: 'package.json, package-lock.json', allowEmptyArchive: true
+        }
+    }
 }
